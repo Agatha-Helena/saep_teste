@@ -125,6 +125,56 @@ app.delete('/clientes/:id', async(req,res) => {
     await excluir(res, 'cliente', req.params.id,'/clientes', 'o cliente possui veiculos cadastrados')
 })
 
+async function mostrarVeiculos(req, res, erro = ''){
+    const [veiculos] = await db.query('SELECT * FROM veiculos')
+
+    const [listaClientes] = await db.query('SELECT id, nome FROM clientes')
+
+    const editar = veiculos.find(v => String(v.id) === req.query.editar)
+
+    const clientes = listaClientes.map((cliente) => ({
+        ...cliente,
+        selecionado: editar && cliente.id === editar.cliente_id ? 'selected' : ''
+    }))
+
+    res.send(mostrar('veiculos', {
+        veiculos,
+         clientes,
+         erro,
+         editando: Boolean(editar),
+         acao: editar ? `/veiculos/${editar.id}` : `/veiculos`,
+         form: editar || {}
+    }))
+}
+
+app.get('/veiculos', (req, res) => mostrarVeiculos(req, res))
+
+app.post('/veiculos', async (req, res) =>{
+    const {cliente_id, placa, marca, modelo, ano} = req.body
+
+    if(!cliente_id){
+        return mostrarVeiculos(req,res, 'cliente_id é obrigatório')
+    }
+
+    await db.query ('INSERT INTO veiculos (cliente_id, placa, marca, modelo, ano) VALUES (?, ?, ?, ?, ?)', [cliente_id, placa, marca, modelo, ano || null])
+
+    res.redirect('/veiculos')
+})
+
+app.put('/veiculos/:id', async (req,res) => {
+    const {cliente_id, placa, marca, modelo, ano} = req.body
+
+    if(!cliente_id){
+        return mostrarVeiculos(req, res, 'cliente_id e obrigatorio')
+    }
+
+    await db.query('UPDATE veiculos SET cliente_id = ?, placa = ?, marca = ?, modelo = ?, ano = ? WHERE id = ?', [cliente_id, placa, marca, modelo, ano || null, req.params.id])
+})
+
+app.delete('/veiculos/:id', async (req, res) =>{
+    await excluir(res, 'veiculos', req.params.id, '/veiculos', 'o veiculo possui agendamento')
+})
+
 const port = process.env.PORT || 3000
 app.listen(port, () => {
     console.log(`Oficina TORQUE rodando em http://localhost:${port}`)

@@ -45,9 +45,9 @@
         {{#editando}}
         <input type="hidden" name="_method" value="PUT"/>{{/editando}}
         <input type="text" name="nome" placeholder="Nome" value="{{form.nome}}" required/>
-        <input type="text" name="cpf" placeholder="Nome" value="{{form.cpf}}" required/>
-        <input type="text" name="telefone" placeholder="Nome" value="{{form.telefone}}" required/>
-        <input type="text" name="email" placeholder="Nome" value="{{form.email}}" required/>
+        <input type="text" name="cpf" placeholder="CPF" value="{{form.cpf}}" required/>
+        <input type="text" name="telefone" placeholder="Telefone" value="{{form.telefone}}" required/>
+        <input type="text" name="email" placeholder="Email" value="{{form.email}}" required/>
         <button>{{#editando}}Salvar{{/editando}}{{^editando}}Cadastrar{{/editando}}</button>
     </form>
 </body>
