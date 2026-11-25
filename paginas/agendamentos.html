@@ -23,6 +23,15 @@
             <td>{{servico}}</td>
             <td>{{placa}} - {{marca}} {{modelo}}</td>
             <td>{{cliente_nome}}</td>
+            <td>
+                <form method="POST" action="/agendamentos/{{id}}">
+                    <input type="hidden" name="_method" value="PUT"/>
+
+                    <input type="datetime-local" name="data_agendamento" value="{{data_input}}" required/>
+
+                    <button>Salvar</button>
+                </form>
+            </td>
         </tr>
     </table>
 </body>
