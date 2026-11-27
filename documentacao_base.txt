@@ -1,0 +1,29 @@
+# Torque - Sistema da Oficina Mecanica
+Projeto de estudo (SENAI) para controle de clientes, veiculos e agendamentos de uma oficina mecanica, com protecao do CPF (LGPD) e login com token JWT.
+
+Estrutura
+database/           script.sql
+paginas/            HTML puro
+docs/               requisitos.md e der.md
+.env
+app.js
+gerar-valores.js
+
+## 1. Banco de dados
+Tenha um MySQL rodando localmente.
+
+Rode o arquivo database/script.sql (ele cria o banco db_oficina_veiculo, as tabelas e insere os dados de teste, inclusive o usuario de login).
+
+node gerar-valores.js (criptografa dados como cpf e senha, para maior seguranca).
+
+## 2. Backend
+npm install
+npm start
+A API sobe em http://localhost:3000.
+
+## 3. Frontend HTML puro
+Abra login.html direto no navegador. A API precisa estar rodando.
+
+Usuario de teste
+E-mail: admin@fisiomais.com
+Senha: 123456
