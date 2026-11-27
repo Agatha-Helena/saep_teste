@@ -32,7 +32,31 @@
                     <button>Salvar</button>
                 </form>
             </td>
+            <td>
+                <form method="POST" action="/agendamentos/{{id}}">
+                    <input type="hidden" name="_method" value="DELETE" />
+                </form>
+            </td>
         </tr>
+        {{/agendamentos}}
     </table>
+
+    <h2>Cadastrar Agendamento</h2>
+    <form method="POST" action="/agendamentos" >
+        <select name="veiculos_id" required>
+            <option value="">Selecione o veículo</option>
+                {{#veiculos}}
+                <option value="{{id}}">{{placa}} - {{marca}} {{modelo}}</option>
+                {{/veiculos}}
+        </select>
+        <input type="datetime-local" name="data_agendamento" required />
+
+
+        <input type="text" name="servico" placeholder="Serviço" />
+
+
+        <button>Cadastrar</button>
+    </form>
+    
 </body>
 </html>
