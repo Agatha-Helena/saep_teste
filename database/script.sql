@@ -1,37 +1,37 @@
 CREATE DATABASE IF NOT EXISTS db_oficina_veiculo;
 USE db_oficina_veiculo;
 
-CREATE TABLE IF NOT EXISTS clientes(
-    cliente INT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(200) NOT NULL,
-    cpf VARCHAR(150) NOT NULL UNIQUE,
-    email VARCHAR(255) NOT NULL,
-    telefone CHAR(11)
+CREATE TABLE usuarios (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nome VARCHAR(100) NOT NULL,
+  email VARCHAR(100) NOT NULL UNIQUE,
+  senha VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS veiculos(
-    id_veiculo INT AUTO_INCREMENT PRIMARY KEY,
-    marca VARCHAR(100) NOT NULL,
-    modelo VARCHAR(100) NOT NULL,
-    placa VARCHAR(100) NOT NULL,
-    ano YEAR,
-    id_cliente INT NOT NULL,
-    FOREIGN KEY (id_cliente) REFERENCES clientes(id_cliente)
+CREATE TABLE clientes (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nome VARCHAR(100) NOT NULL,
+  cpf VARCHAR(255) NOT NULL,
+  telefone VARCHAR(20),
+  email VARCHAR(100)
 );
 
-CREATE TABLE IF NOT EXISTS agendamentos(
-    id_agendamento INT AUTO_INCREMENT PRIMARY KEY,
-    id_veiculo INT,
-    data_agendamento DATETIME NOT NULL,
-    servico VARCHAR(100),
-    FOREIGN KEY (id_veiculo) REFERENCES veiculos(id_veiculo)
+CREATE TABLE veiculos (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  cliente_id INT NOT NULL,
+  placa VARCHAR(10) NOT NULL,
+  marca VARCHAR(50),
+  modelo VARCHAR(50),
+  ano INT,
+  FOREIGN KEY (cliente_id) REFERENCES clientes(id)
 );
 
-CREATE TABLE IF NOT EXISTS usuarios(
-    id_usuario INT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(200) NOT NULL,
-    email VARCHAR(255) NOT NULL UNIQUE,
-    senha VARCHAR(150) NOT NULL
+CREATE TABLE agendamentos (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  id_veiculo INT NOT NULL,
+  data_agendamento DATETIME NOT NULL,
+  servico VARCHAR(100),
+  FOREIGN KEY (id_veiculo) REFERENCES veiculos(id)
 );
 
 INSERT INTO clientes (nome, cpf, email, telefone) VALUES
