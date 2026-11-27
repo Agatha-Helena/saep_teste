@@ -52,14 +52,14 @@ function descriptografar(texto){
 
 async function excluir(res, tabela, id, volta, motivo) {
     try {
-        await db.query(`DELETE FROM ${tabela} WHERE id = ?`, [id])
+        await db.query(`DELETE FROM ${tabela} WHERE id = ?`, [id]);
         res.redirect(volta)
     } catch (error) {
         if(error.code === 'ER_ROW_IS_REFERENCED_2'){
             return res.status(409).send(`<p>Nao foi possivel excluir: ${motivo}.</p><p><a href='${volta}'>Voltar</a></p>`)
         }
         console.error(error)
-        res.status(500).send(`<p>Erro ao excluir.</p><p><a href='${voltar}'>Voltar</a></p>`)
+        res.status(500).send(`<p>Erro ao excluir.</p><p><a href='${volta}'>Voltar</a></p>`)
     }
 }
 
@@ -121,8 +121,16 @@ app.post('/clientes', async(req,res) =>{
     res.redirect('/clientes')
 })
 
+app.put('/clientes/:id', async (req, res) => {
+    const { nome, cpf, telefone, email } = req.body;
+    await db.query(
+        "UPDATE clientes SET nome = ?, cpf = ?, telefone = ?, email = ? WHERE id = ?", [nome, criptografar(cpf), telefone, email, req.params.id]
+    )
+    res.redirect("/clientes")
+})
+
 app.delete('/clientes/:id', async(req,res) => {
-    await excluir(res, 'cliente', req.params.id,'/clientes', 'o cliente possui veiculos cadastrados')
+    await excluir(res, 'clientes', req.params.id,'/clientes', 'o cliente possui veiculos cadastrados')
 })
 
 async function mostrarVeiculos(req, res, erro = ''){
@@ -169,6 +177,8 @@ app.put('/veiculos/:id', async (req,res) => {
     }
 
     await db.query('UPDATE veiculos SET cliente_id = ?, placa = ?, marca = ?, modelo = ?, ano = ? WHERE id = ?', [cliente_id, placa, marca, modelo, ano || null, req.params.id])
+
+    res.redirect('/veiculos')
 })
 
 app.delete('/veiculos/:id', async (req, res) =>{
@@ -179,7 +189,7 @@ app.delete('/veiculos/:id', async (req, res) =>{
 
 app.get("/agendamentos", async (req, res) => {
   const [lista] = await db.query(
-    "SELECT agendamentos.*, veiculos.placa, veiculos.marca, veiculos.modelo, clientes.nome AS cliente_nome FROM agendamentos JOIN veiculos ON veiculos.id = agendamentos.veiculo_id JOIN clientes ON clientes.id = veiculos.cliente_id ORDER BY agendamentos.data_agendamento",
+    "SELECT agendamentos.*, veiculos.placa, veiculos.marca, veiculos.modelo, clientes.nome AS cliente_nome FROM agendamentos JOIN veiculos ON veiculos.id = agendamentos.id_veiculo JOIN clientes ON clientes.id = veiculos.cliente_id ORDER BY agendamentos.data_agendamento ASC",
   );
 
   const [veiculos] = await db.query("SELECT * FROM veiculos");
@@ -193,11 +203,11 @@ app.get("/agendamentos", async (req, res) => {
 });
 
 app.post("/agendamentos", async (req, res) => {
-  const { veiculo_id, data_agendamento, servico } = req.body;
+  const { id_veiculo, data_agendamento, servico } = req.body;
 
   await db.query(
-    "INSERT INTO agendamentos (veiculo_id, data_agendamento, servico) VALUES (?, ?, ?)",
-    [veiculo_id, data_agendamento.replace("T", " "), servico],
+    "INSERT INTO agendamentos (id_veiculo, data_agendamento, servico) VALUES (?, ?, ?)",
+    [id_veiculo, data_agendamento.replace("", " "), servico],
   );
   res.redirect("/agendamentos");
 });

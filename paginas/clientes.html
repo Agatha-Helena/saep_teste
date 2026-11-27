@@ -29,7 +29,9 @@
             <td>{{telefone}}</td>
             <td>{{email}}</td>
             <td>
-                <a href="/clientes?editar={{id}}">Editar</a>
+                <button>
+                    <a href="/clientes?editar={{id}}">Editar</a>
+                </button>
                 <form method="POST" action="/clientes/{{id}}">
                     <input type="hidden" name="_method" value="DELETE"/>
                     <button>Excluir</button>

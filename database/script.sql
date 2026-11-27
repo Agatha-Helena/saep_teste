@@ -2,7 +2,7 @@ CREATE DATABASE IF NOT EXISTS db_oficina_veiculo;
 USE db_oficina_veiculo;
 
 CREATE TABLE IF NOT EXISTS clientes(
-    id_cliente INT AUTO_INCREMENT PRIMARY KEY,
+    cliente INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(200) NOT NULL,
     cpf VARCHAR(150) NOT NULL UNIQUE,
     email VARCHAR(255) NOT NULL,

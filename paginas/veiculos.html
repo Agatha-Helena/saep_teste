@@ -25,7 +25,9 @@
             <td>{{ano}}</td>
             <td>{{cliente_id}}</td>
             <td>
-                <a href="/veiculos?editar={{id}}">Editar</a>
+                <button>
+                    <a href="/veiculos?editar={{id}}">Editar</a>
+                </button>
                 <form method="POST" action="/veiculos/{{id}}">
                     <input type="hidden" name="_method" value="DELETE"/>
                     <button>Excluir</button>

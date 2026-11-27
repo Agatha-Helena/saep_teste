@@ -28,13 +28,14 @@
                     <input type="hidden" name="_method" value="PUT"/>
 
                     <input type="datetime-local" name="data_agendamento" value="{{data_input}}" required/>
-
+                    
                     <button>Salvar</button>
                 </form>
             </td>
             <td>
                 <form method="POST" action="/agendamentos/{{id}}">
-                    <input type="hidden" name="_method" value="DELETE" />
+                    <input type="hidden" name="_method" value="DELETE"/>
+                    <button>Excluir</button>
                 </form>
             </td>
         </tr>
